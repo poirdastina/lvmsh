@@ -500,7 +500,7 @@ function triggerGlitch() {
         let glitched = '';
         for (let i = 0; i < original.length; i++) {
           if (original[i] === '$' && Math.random() > 0.4) {
-            glitched += Math.random() > 0.5 ? '?' : '0';
+            glitched += Math.random() > 0.5 ? '█' : '0';
           } else {
             glitched += original[i];
           }
