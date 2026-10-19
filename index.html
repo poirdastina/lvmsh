@@ -209,6 +209,7 @@
     100% { transform: translateY(100%); }
   }
 
+  /* Добавили анимацию легкой пульсации для сердечка */
   .ascii-container {
     position: relative;
     z-index: 1;
@@ -221,7 +222,13 @@
     transition: transform 0.1s ease, color 0.2s ease, text-shadow 0.2s ease;
     cursor: pointer;
     user-select: none;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    animation: subtlePulse 2s infinite alternate ease-in-out;
+  }
+
+  @keyframes subtlePulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.03); }
   }
 
   .ascii-container.glitch-active {
@@ -257,6 +264,27 @@
   }
   @keyframes blink { 50% { opacity: 0; } }
 
+  /* Новый блок для подсказки "нажми на меня" */
+  .tap-hint {
+    position: relative;
+    z-index: 1;
+    color: #888;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    margin-bottom: 25px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: hintPulse 1.5s infinite alternate;
+  }
+  .tap-hint.show {
+    opacity: 1;
+  }
+  
+  @keyframes hintPulse {
+    0% { opacity: 0.5; text-shadow: 0 0 5px rgba(255, 255, 255, 0); }
+    100% { opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+  }
+
   .love-message {
     position: relative;
     z-index: 1;
@@ -291,6 +319,7 @@
     .message p:nth-of-type(1) { font-size: 1.2em; }
     .img-wrap img { max-width: 150px; }
     .love-message { font-size: 0.95em; }
+    .tap-hint { font-size: 0.85em; }
   }
 </style>
 </head>
@@ -325,6 +354,9 @@
 
       <div class="ascii-container" id="asciiContainer" onclick="spawnConfetti()" title="Нажми на меня"></div>
       
+      <!-- Новая подсказка -->
+      <div class="tap-hint" id="tapHint">[ нажми на сердечко ]</div>
+
       <div class="love-message" id="loveMessage">
         <span class="prompt-prefix">> incoming_message:</span> <br>
         <span id="typedText"></span><span class="cursor" id="msgCursor" style="display:none;"></span>
@@ -489,8 +521,12 @@ function triggerGlitch() {
         clearInterval(glitchInterval);
         container.style.color = '#ff4d6d';
         container.style.textShadow = '0 0 30px rgba(255, 77, 109, 1), 0 0 60px rgba(255, 77, 109, 0.8)';
+        // Применяем анимацию пульсации после глитча
+        container.style.animation = 'subtlePulse 1.5s infinite alternate ease-in-out';
         container.style.transform = 'scale(1.05)';
         
+        // Показываем подсказку и запускаем печать сообщения
+        document.getElementById('tapHint').classList.add('show');
         setTimeout(startMessageTyping, 800);
       }
     }, 150);
@@ -502,7 +538,7 @@ function startMessageTyping() {
   const typedText = document.getElementById('typedText');
   const msgCursor = document.getElementById('msgCursor');
   
-  const finalMessage = "очень надеюсь что твой день пройдет хорошо, жду обнимашек ❤️";
+  const finalMessage = "очень надеюсь что твой день пройдет хорошо, жду обнимашек)";
   
   msgContainer.classList.add('show');
   msgCursor.style.display = 'inline-block';
