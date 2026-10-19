@@ -209,7 +209,7 @@
     100% { transform: translateY(100%); }
   }
 
-  
+  /* Добавили анимацию легкой пульсации для сердечка */
   .ascii-container {
     position: relative;
     z-index: 1;
@@ -264,7 +264,7 @@
   }
   @keyframes blink { 50% { opacity: 0; } }
 
-  /* Новый блок для подсказки "нажми на меня" */
+  
   .tap-hint {
     position: relative;
     z-index: 1;
@@ -330,8 +330,8 @@
     <img src="heart.png" alt="heart">
   </div>
   <div class="message">
-    <p>Помнишь, программисты делали своим сайты романтичные?</p>
-    <p>Чем я хуже их?)</p>
+    <p>помнишь, программисты делали своим сайты романтичные?</p>
+    <p>чем я хуже их?))</p>
   </div>
   
   <div class="button-row" id="buttonRow">
@@ -354,7 +354,7 @@
 
       <div class="ascii-container" id="asciiContainer" onclick="spawnConfetti()" title="Нажми на меня"></div>
       
-      <!-- Новая подсказка -->
+      
       <div class="tap-hint" id="tapHint">[ нажми на сердечко ]</div>
 
       <div class="love-message" id="loveMessage">
@@ -369,7 +369,7 @@
 <script>
 function initMatrix() {
   const matrixBg = document.getElementById('matrixBg');
-  const symbols = ['$', '1', '0', '♥', '?', 'F', 'A', 'K', 'E'];
+  const symbols = ['$', '1', '0', '♥', '█', 'F', 'A', 'K', 'E'];
   const columns = 20;
 
   for (let i = 0; i < columns; i++) {
@@ -538,7 +538,7 @@ function startMessageTyping() {
   const typedText = document.getElementById('typedText');
   const msgCursor = document.getElementById('msgCursor');
   
-  const finalMessage = "очень надеюсь что твой день пройдет хорошо, жду обнимашек)";
+  const finalMessage = "очень надеюсь что твой день пройдет хорошо, жду обнимашек )";
   
   msgContainer.classList.add('show');
   msgCursor.style.display = 'inline-block';
