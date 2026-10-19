@@ -1,396 +1,400 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta charset="UTF-8">
-    <title>Для тебя ❤️</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8">
+<title>яжирни</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html, body {
-            height: 100%;
-            overflow: hidden;
-            background-color: #0a0a0c;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #e0e0e0;
-            -webkit-tap-highlight-color: transparent;
-        }
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background-color: #0a0a0c; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #e0e0e0;
+    -webkit-tap-highlight-color: transparent;
+  }
 
-        #screen1 {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            padding: 20px;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
+  #screen1 {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    padding: 20px;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  #screen1.hide {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+  }
 
-            #screen1.hide {
-                opacity: 0;
-                transform: translateY(-20px);
-                pointer-events: none;
-            }
+  .gif-wrap {
+    opacity: 0;
+    transform: scale(0.9);
+    animation: fadeIn 1s ease forwards;
+    animation-delay: 0.2s;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .gif-wrap img {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  @keyframes fadeIn { to { opacity: 1; transform: scale(1); } }
 
-        .gif-wrap {
-            opacity: 0;
-            transform: scale(0.9);
-            animation: fadeIn 1s ease forwards;
-            animation-delay: 0.2s;
-            margin-bottom: 30px;
-            text-align: center;
-        }
+  .message { text-align: center; max-width: 600px; padding: 0 10px; }
+  
+  .message p {
+    font-size: 1.2em;
+    line-height: 1.8;
+    color: #b0b0b0;
+    opacity: 0;
+    animation: fadeSlide 1s ease forwards;
+  }
+  
+  .message p:nth-of-type(1) { animation-delay: 0.8s; color: #fff; font-size: 1.4em; font-weight: 500; margin-bottom: 15px;}
+  .message p:nth-of-type(2) { animation-delay: 1.6s; }
 
-            .gif-wrap img {
-                width: 100%;
-                max-width: 200px;
-                border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
+  .button-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    opacity: 0;
+    animation: fadeSlide 1s ease forwards;
+    animation-delay: 2.5s;
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    height: 50px;
+  }
 
-        .message {
-            text-align: center;
-            max-width: 600px;
-            padding: 0 10px;
-        }
+  .next-btn {
+    padding: 12px 32px;
+    font-size: 1em;
+    font-family: inherit;
+    font-weight: 500;
+    color: #fff;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    z-index: 2;
+    white-space: nowrap;
+    touch-action: manipulation;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .next-btn:active { background-color: #333; }
 
-            .message p {
-                font-size: 1.2em;
-                line-height: 1.8;
-                color: #b0b0b0;
-                opacity: 0;
-                animation: fadeSlide 1s ease forwards;
-            }
+  .nah-btn {
+    padding: 12px 24px;
+    font-size: 1em;
+    font-family: inherit;
+    font-weight: 500;
+    color: #888;
+    background-color: transparent;
+    border: 1px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 1;
+    touch-action: manipulation;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .nah-btn:active { color: #fff; border-color: #555; }
 
-                .message p:nth-of-type(1) {
-                    animation-delay: 0.8s;
-                    color: #fff;
-                    font-size: 1.4em;
-                    font-weight: 500;
-                    margin-bottom: 15px;
-                }
+  #screen2 {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+    padding: 15px;
+  }
+  #screen2.show { opacity: 1; pointer-events: auto; }
 
-                .message p:nth-of-type(2) {
-                    animation-delay: 1.6s;
-                }
+  .terminal {
+    width: 100%;
+    max-width: 750px; /* Немного расширил, чтобы текст влезал ровнее */
+    background: #0d0d0f;
+    border: 1px solid #222;
+    border-radius: 10px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+    transform: scale(0.95);
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+    z-index: 2;
+  }
+  #screen2.show .terminal { transform: scale(1); }
 
-        @keyframes fadeSlide {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #141416;
+    border-bottom: 1px solid #222;
+    position: relative;
+    z-index: 5;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.red { background: #ff5f56; }
+  .dot.yellow { background: #ffbd2e; }
+  .dot.green { background: #27c93f; }
+  .term-title {
+    margin-left: 10px;
+    font-size: 0.8em;
+    color: #666;
+    font-family: 'Courier New', monospace;
+  }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+  .terminal-body {
+    padding: 30px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 350px;
+    overflow: hidden;
+    position: relative;
+  }
 
-        /* Блок с кнопками */
-        .button-row {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            justify-content: center;
-            margin-top: 40px;
-            opacity: 0;
-            animation: fadeSlide 1s ease forwards;
-            animation-delay: 2.5s;
-            position: relative; /* Важно для наложения кнопок */
-            width: 100%;
-            max-width: 350px;
-            height: 50px; /* Фиксируем высоту, чтобы верстка не прыгала */
-        }
+  /* Слой с падающими символами (Матрица) */
+  #matrixBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.1;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #ff4d6d;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-around;
+  }
 
-        .next-btn {
-            padding: 12px 32px;
-            font-size: 1em;
-            font-family: inherit;
-            font-weight: 500;
-            color: #fff;
-            background-color: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            z-index: 2;
-            white-space: nowrap;
-            touch-action: manipulation;
-            position: absolute; /* Кнопки стоят друг на друге по центру */
-            left: 50%;
-            transform: translateX(-50%);
-        }
+  .matrix-column {
+    display: flex;
+    flex-direction: column;
+    animation: matrixFall linear infinite;
+  }
 
-            .next-btn:active {
-                background-color: #333;
-            }
+  @keyframes matrixFall {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
 
-        .nah-btn {
-            padding: 12px 24px;
-            font-size: 1em;
-            font-family: inherit;
-            font-weight: 500;
-            color: #888;
-            background-color: transparent;
-            border: 1px solid #333;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            z-index: 1;
-            touch-action: manipulation;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
+  .ascii-container {
+    position: relative;
+    z-index: 1;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1.1em;
+    line-height: 1.2;
+    text-align: left;
+    white-space: pre;
+    display: inline-block;
+    transition: transform 0.1s ease, color 0.2s ease, text-shadow 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 20px;
+  }
 
-            .nah-btn:active {
-                color: #fff;
-                border-color: #555;
-            }
+  .ascii-container.glitch-active {
+    animation: glitchShake 0.2s infinite;
+    color: #ff0000 !important;
+    text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000 !important;
+  }
 
-        #screen2 {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 3;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.8s ease;
-            padding: 15px;
-        }
+  @keyframes glitchShake {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-3px, 2px); }
+    50% { transform: translate(3px, -2px); }
+    75% { transform: translate(-2px, -3px); }
+    100% { transform: translate(2px, 3px); }
+  }
 
-            #screen2.show {
-                opacity: 1;
-                pointer-events: auto;
-            }
+  .heart-line {
+    opacity: 0;
+    animation: lineIn 0.2s ease forwards;
+    color: #ff4d6d;
+    text-shadow: 0 0 10px rgba(255, 77, 109, 0.4);
+  }
+  @keyframes lineIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .terminal {
-            width: 100%;
-            max-width: 700px;
-            background: #0d0d0f;
-            border: 1px solid #222;
-            border-radius: 10px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-            overflow: hidden;
-            transform: scale(0.95);
-            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1em;
+    background: #ff4d6d;
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
 
-        #screen2.show .terminal {
-            transform: scale(1);
-        }
+  /* Стили для текста "жду обнимашек" */
+  .love-message {
+    position: relative;
+    z-index: 1;
+    color: #ff8fa3;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    text-align: center;
+    max-width: 90%;
+    line-height: 1.5;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    text-shadow: 0 0 15px rgba(255, 77, 109, 0.6);
+    min-height: 50px; /* Чтобы верстка не прыгала, пока текст печатается */
+  }
+  .love-message.show { opacity: 1; }
+  
+  .prompt-prefix {
+    color: #888;
+  }
 
-        .terminal-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            background: #141416;
-            border-bottom: 1px solid #222;
-        }
+  /* Конфетти */
+  .confetti-heart {
+    position: fixed;
+    pointer-events: none;
+    z-index: 50;
+    color: #ff4d6d;
+    text-shadow: 0 0 15px #ff4d6d;
+  }
 
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-            .dot.red {
-                background: #ff5f56;
-            }
-
-            .dot.yellow {
-                background: #ffbd2e;
-            }
-
-            .dot.green {
-                background: #27c93f;
-            }
-
-        .term-title {
-            margin-left: 10px;
-            font-size: 0.8em;
-            color: #666;
-            font-family: 'Courier New', monospace;
-        }
-
-        .terminal-body {
-            padding: 30px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 300px;
-            overflow-x: hidden;
-        }
-
-        .ascii-container {
-            font-family: "Courier New", Courier, monospace;
-            font-size: 1.1em;
-            line-height: 1.2;
-            text-align: left;
-            white-space: pre;
-            display: inline-block;
-            transition: transform 0.1s ease, color 0.2s ease, text-shadow 0.2s ease;
-        }
-
-            .ascii-container.glitch-active {
-                animation: glitchShake 0.2s infinite;
-                color: #ff0000 !important;
-                text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000 !important;
-            }
-
-        @keyframes glitchShake {
-            0% {
-                transform: translate(0, 0);
-            }
-
-            25% {
-                transform: translate(-3px, 2px);
-            }
-
-            50% {
-                transform: translate(3px, -2px);
-            }
-
-            75% {
-                transform: translate(-2px, -3px);
-            }
-
-            100% {
-                transform: translate(2px, 3px);
-            }
-        }
-
-        .heart-line {
-            opacity: 0;
-            animation: lineIn 0.2s ease forwards;
-            color: #ff4d6d;
-            text-shadow: 0 0 10px rgba(255, 77, 109, 0.4);
-        }
-
-        @keyframes lineIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 1em;
-            background: #ff4d6d;
-            margin-left: 2px;
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            50% {
-                opacity: 0;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .ascii-container {
-                font-size: 0.75em;
-            }
-
-            .message p {
-                font-size: 1.1em;
-            }
-
-                .message p:nth-of-type(1) {
-                    font-size: 1.2em;
-                }
-
-            .gif-wrap img {
-                max-width: 150px;
-            }
-        }
-    </style>
+  @media (max-width: 600px) {
+    .ascii-container { font-size: 0.7em; }
+    .message p { font-size: 1.1em; }
+    .message p:nth-of-type(1) { font-size: 1.2em; }
+    .gif-wrap img { max-width: 150px; }
+    .love-message { font-size: 0.95em; }
+  }
+</style>
 </head>
 <body>
 
-    <div id="screen1">
-        <div class="gif-wrap">
-            <img src="heart.png" alt="heart">
-        </div>
-        <div class="message">
-            <p>Помнишь, программисты делали своим сайты романтичные?</p>
-            <p>Чем я хуже их?))</p>
-        </div>
+<audio id="bgMusic" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
 
-        <div class="button-row" id="buttonRow">
-            <!-- НАЧАЛЬНАЯ ПОЗИЦИЯ КНОПОК -->
-            <button class="nah-btn" id="nahBtn" onclick="growNextBtn()">Иди нахуй</button>
-            <button class="next-btn" id="nextBtn" onclick="goToTerminal()" style="transform: translate(-50%, 0) scale(1); z-index: 2;">Дальше →</button>
-        </div>
+<div id="screen1">
+  <div class="gif-wrap">
+    <img src="heart.png" alt="heart">
+  </div>
+  <div class="message">
+    <p>Помнишь, программисты делали своим сайты романтичные?</p>
+    <p>Чем я хуже их?))</p>
+  </div>
+  
+  <div class="button-row" id="buttonRow">
+    <button class="nah-btn" id="nahBtn" onclick="growNextBtn()">Иди нахуй</button>
+    <button class="next-btn" id="nextBtn" onclick="goToTerminal()" style="transform: translate(-50%, 0) scale(1); z-index: 2;">Дальше →</button>
+  </div>
+</div>
+
+<div id="screen2">
+  <div class="terminal">
+    <div class="terminal-header">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+      <span class="term-title">love.exe</span>
     </div>
+    <div class="terminal-body">
+      
+      <div id="matrixBg"></div>
 
-    <div id="screen2">
-        <div class="terminal">
-            <div class="terminal-header">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <span class="term-title">love.exe</span>
-            </div>
-            <div class="terminal-body">
-                <div class="ascii-container" id="asciiContainer"></div>
-            </div>
-        </div>
+      <div class="ascii-container" id="asciiContainer" onclick="spawnConfetti()" title="Нажми на меня"></div>
+      
+      <!-- НОВЫЙ БЛОК ДЛЯ ТЕКСТА -->
+      <div class="love-message" id="loveMessage">
+        <span class="prompt-prefix">> incoming_message:</span> <br>
+        <span id="typedText"></span><span class="cursor" id="msgCursor" style="display:none;"></span>
+      </div>
+
     </div>
+  </div>
+</div>
 
-    <script>
+<script>
+// 1. ГЕНЕРАТОР МАТРИЦЫ
+function initMatrix() {
+  const matrixBg = document.getElementById('matrixBg');
+  const symbols = ['$', '1', '0', '♥', '█', 'F', 'A', 'K', 'E'];
+  const columns = 20;
+
+  for (let i = 0; i < columns; i++) {
+    const col = document.createElement('div');
+    col.className = 'matrix-column';
+    let text = '';
+    const length = 10 + Math.floor(Math.random() * 20);
+    for (let j = 0; j < length; j++) {
+      text += symbols[Math.floor(Math.random() * symbols.length)] + '<br>';
+    }
+    col.innerHTML = text;
+    col.style.animationDuration = (4 + Math.random() * 6) + 's';
+    col.style.animationDelay = '-' + (Math.random() * 10) + 's';
+    matrixBg.appendChild(col);
+  }
+}
+initMatrix();
+
+// 2. ЛОГИКА КНОПОК
 let currentScale = 1;
 const nextBtn = document.getElementById('nextBtn');
 const nahBtn = document.getElementById('nahBtn');
 
-// ЧТОБЫ КНОПКИ НЕ ПЕРЕКРЫВАЛИ ДРУГ ДРУГА В САМОМ НАЧАЛЕ, РАЗДВИНЕМ ИХ
-// (Мы используем translate для центрирования, поэтому добавим отступы через margin)
 nextBtn.style.marginLeft = "65px";
 nahBtn.style.marginLeft = "-65px";
 
 function growNextBtn() {
   currentScale += 0.4;
-
-  // Кнопка Дальше растет из центра
   nextBtn.style.transform = `translate(-50%, 0) scale(${currentScale})`;
   nextBtn.style.zIndex = 10 + currentScale;
 
-  // Кнопка Иди нахуй сжимается
   const nahScale = Math.max(0.1, 1 - currentScale * 0.15);
   nahBtn.style.transform = `translate(-50%, 0) scale(${nahScale})`;
   nahBtn.style.opacity = Math.max(0.1, 1 - currentScale * 0.15);
 
-  // Когда Дальше становится гигантской, она перекрывает Иди нахуй
   if (currentScale > 3) {
     nahBtn.style.pointerEvents = 'none';
-    // Убираем отступы, чтобы Дальше встала ровно по центру
     nextBtn.style.marginLeft = "0px";
   }
 }
 
 function goToTerminal() {
+  const music = document.getElementById('bgMusic');
+  if (music) {
+    music.volume = 0.4;
+    music.play().catch(e => console.log("Музыка не найдена"));
+  }
+
   document.getElementById('screen1').classList.add('hide');
   setTimeout(() => {
     document.getElementById('screen2').classList.add('show');
@@ -398,8 +402,8 @@ function goToTerminal() {
   }, 800);
 }
 
+// 3. ТЕРМИНАЛ И СЕРДЕЧКО
 const asciiContainer = document.getElementById('asciiContainer');
-
 const heartAscii = [
   '    $$$$$$$$        $$$$$$$$',
   '  $$$$$$$$$$$$    $$$$$$$$$$$$',
@@ -431,7 +435,7 @@ function startTerminal() {
 function nextLine() {
   if (lineIndex >= heartAscii.length) {
     triggerGlitch();
-    return;
+    return; 
   }
   const text = heartAscii[lineIndex];
   addLine(text, () => {
@@ -444,10 +448,10 @@ function addLine(text, callback) {
   const line = document.createElement('div');
   line.className = 'heart-line';
   const content = document.createElement('span');
-  content.dataset.original = text;
+  content.dataset.original = text; 
   const cursor = document.createElement('span');
   cursor.className = 'cursor';
-
+  
   line.appendChild(content);
   line.appendChild(cursor);
   asciiContainer.appendChild(line);
@@ -469,18 +473,16 @@ function addLine(text, callback) {
 function triggerGlitch() {
   const container = document.getElementById('asciiContainer');
   const lines = container.querySelectorAll('.heart-line span');
-
+  
   setTimeout(() => {
     let glitchCount = 0;
-    const maxGlitches = 10;
+    const maxGlitches = 10; 
 
     const glitchInterval = setInterval(() => {
       container.classList.add('glitch-active');
-
       lines.forEach(span => {
         const original = span.dataset.original;
         let glitched = '';
-
         for (let i = 0; i < original.length; i++) {
           if (original[i] === '$' && Math.random() > 0.4) {
             glitched += Math.random() > 0.5 ? '█' : '0';
@@ -505,11 +507,69 @@ function triggerGlitch() {
         container.style.color = '#ff4d6d';
         container.style.textShadow = '0 0 30px rgba(255, 77, 109, 1), 0 0 60px rgba(255, 77, 109, 0.8)';
         container.style.transform = 'scale(1.05)';
+        
+        // ЗАПУСКАЕМ ПЕЧАТЬ СООБЩЕНИЯ
+        setTimeout(startMessageTyping, 800);
       }
-
     }, 150);
   }, 500);
 }
-    </script>
+
+// 4. ПЕЧАТЬ СООБЩЕНИЯ "ЖДУ ОБНИМАШЕК"
+function startMessageTyping() {
+  const msgContainer = document.getElementById('loveMessage');
+  const typedText = document.getElementById('typedText');
+  const msgCursor = document.getElementById('msgCursor');
+  
+  const finalMessage = "очень надеюсь что твой день пройдет хорошо, жду обнимашек ❤️";
+  
+  msgContainer.classList.add('show');
+  msgCursor.style.display = 'inline-block';
+  
+  let i = 0;
+  function typeNextChar() {
+    if (i < finalMessage.length) {
+      typedText.textContent += finalMessage[i];
+      i++;
+      setTimeout(typeNextChar, 40); // Скорость печати сообщения
+    } else {
+      // Когда сообщение напечаталось, оставляем курсор мигать
+    }
+  }
+  
+  setTimeout(typeNextChar, 500);
+}
+
+// 5. КОНФЕТТИ
+function spawnConfetti() {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => {
+      const h = document.createElement('div');
+      h.className = 'confetti-heart';
+      h.textContent = '❤️';
+      h.style.left = cx + 'px';
+      h.style.top = cy + 'px';
+      h.style.fontSize = (14 + Math.random()*20) + 'px';
+      h.style.transition = 'transform 1.5s cubic-bezier(0.1, 0.8, 0.2, 1), opacity 1.5s ease';
+      document.body.appendChild(h);
+
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 100 + Math.random() * 300;
+      const x = Math.cos(angle) * dist;
+      const y = Math.sin(angle) * dist;
+
+      requestAnimationFrame(() => {
+        h.style.transform = `translate(${x}px, ${y}px) scale(0.2) rotate(${Math.random()*360}deg)`;
+        h.style.opacity = '0';
+      });
+
+      setTimeout(() => h.remove(), 1500);
+    }, i * 20);
+  }
+}
+</script>
 </body>
 </html>
