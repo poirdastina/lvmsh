@@ -209,7 +209,7 @@
     100% { transform: translateY(100%); }
   }
 
-  /* Добавили анимацию легкой пульсации для сердечка */
+  
   .ascii-container {
     position: relative;
     z-index: 1;
@@ -331,12 +331,12 @@
   </div>
   <div class="message">
     <p>Помнишь, программисты делали своим сайты романтичные?</p>
-    <p>Чем я хуже их?))</p>
+    <p>Чем я хуже их?)</p>
   </div>
   
   <div class="button-row" id="buttonRow">
-    <button class="nah-btn" id="nahBtn" onclick="growNextBtn()">Иди нахуй</button>
-    <button class="next-btn" id="nextBtn" onclick="goToTerminal()" style="transform: translate(-50%, 0) scale(1); z-index: 2;">Дальше →</button>
+    <button class="nah-btn" id="nahBtn" onclick="growNextBtn()">иди наху</button>
+    <button class="next-btn" id="nextBtn" onclick="goToTerminal()" style="transform: translate(-50%, 0) scale(1); z-index: 2;">дальше →</button>
   </div>
 </div>
 
@@ -346,7 +346,7 @@
       <span class="dot red"></span>
       <span class="dot yellow"></span>
       <span class="dot green"></span>
-      <span class="term-title">love.exe</span>
+      <span class="term-title">gandons.exe</span>
     </div>
     <div class="terminal-body">
       
@@ -369,7 +369,7 @@
 <script>
 function initMatrix() {
   const matrixBg = document.getElementById('matrixBg');
-  const symbols = ['$', '1', '0', '♥', '█', 'F', 'A', 'K', 'E'];
+  const symbols = ['$', '1', '0', '♥', '?', 'F', 'A', 'K', 'E'];
   const columns = 20;
 
   for (let i = 0; i < columns; i++) {
@@ -500,7 +500,7 @@ function triggerGlitch() {
         let glitched = '';
         for (let i = 0; i < original.length; i++) {
           if (original[i] === '$' && Math.random() > 0.4) {
-            glitched += Math.random() > 0.5 ? '█' : '0';
+            glitched += Math.random() > 0.5 ? '?' : '0';
           } else {
             glitched += original[i];
           }
@@ -521,11 +521,11 @@ function triggerGlitch() {
         clearInterval(glitchInterval);
         container.style.color = '#ff4d6d';
         container.style.textShadow = '0 0 30px rgba(255, 77, 109, 1), 0 0 60px rgba(255, 77, 109, 0.8)';
-        // Применяем анимацию пульсации после глитча
+        
         container.style.animation = 'subtlePulse 1.5s infinite alternate ease-in-out';
         container.style.transform = 'scale(1.05)';
         
-        // Показываем подсказку и запускаем печать сообщения
+        
         document.getElementById('tapHint').classList.add('show');
         setTimeout(startMessageTyping, 800);
       }
