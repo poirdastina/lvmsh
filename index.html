@@ -1,0 +1,515 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>Для тебя ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: #0a0a0c;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #e0e0e0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #screen1 {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            padding: 20px;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+            #screen1.hide {
+                opacity: 0;
+                transform: translateY(-20px);
+                pointer-events: none;
+            }
+
+        .gif-wrap {
+            opacity: 0;
+            transform: scale(0.9);
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 0.2s;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+            .gif-wrap img {
+                width: 100%;
+                max-width: 200px;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .message {
+            text-align: center;
+            max-width: 600px;
+            padding: 0 10px;
+        }
+
+            .message p {
+                font-size: 1.2em;
+                line-height: 1.8;
+                color: #b0b0b0;
+                opacity: 0;
+                animation: fadeSlide 1s ease forwards;
+            }
+
+                .message p:nth-of-type(1) {
+                    animation-delay: 0.8s;
+                    color: #fff;
+                    font-size: 1.4em;
+                    font-weight: 500;
+                    margin-bottom: 15px;
+                }
+
+                .message p:nth-of-type(2) {
+                    animation-delay: 1.6s;
+                }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Блок с кнопками */
+        .button-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeSlide 1s ease forwards;
+            animation-delay: 2.5s;
+            position: relative; /* Важно для наложения кнопок */
+            width: 100%;
+            max-width: 350px;
+            height: 50px; /* Фиксируем высоту, чтобы верстка не прыгала */
+        }
+
+        .next-btn {
+            padding: 12px 32px;
+            font-size: 1em;
+            font-family: inherit;
+            font-weight: 500;
+            color: #fff;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            z-index: 2;
+            white-space: nowrap;
+            touch-action: manipulation;
+            position: absolute; /* Кнопки стоят друг на друге по центру */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+            .next-btn:active {
+                background-color: #333;
+            }
+
+        .nah-btn {
+            padding: 12px 24px;
+            font-size: 1em;
+            font-family: inherit;
+            font-weight: 500;
+            color: #888;
+            background-color: transparent;
+            border: 1px solid #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 1;
+            touch-action: manipulation;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+            .nah-btn:active {
+                color: #fff;
+                border-color: #555;
+            }
+
+        #screen2 {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+            padding: 15px;
+        }
+
+            #screen2.show {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+        .terminal {
+            width: 100%;
+            max-width: 700px;
+            background: #0d0d0f;
+            border: 1px solid #222;
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            transform: scale(0.95);
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        #screen2.show .terminal {
+            transform: scale(1);
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #141416;
+            border-bottom: 1px solid #222;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+            .dot.red {
+                background: #ff5f56;
+            }
+
+            .dot.yellow {
+                background: #ffbd2e;
+            }
+
+            .dot.green {
+                background: #27c93f;
+            }
+
+        .term-title {
+            margin-left: 10px;
+            font-size: 0.8em;
+            color: #666;
+            font-family: 'Courier New', monospace;
+        }
+
+        .terminal-body {
+            padding: 30px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 300px;
+            overflow-x: hidden;
+        }
+
+        .ascii-container {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 1.1em;
+            line-height: 1.2;
+            text-align: left;
+            white-space: pre;
+            display: inline-block;
+            transition: transform 0.1s ease, color 0.2s ease, text-shadow 0.2s ease;
+        }
+
+            .ascii-container.glitch-active {
+                animation: glitchShake 0.2s infinite;
+                color: #ff0000 !important;
+                text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000 !important;
+            }
+
+        @keyframes glitchShake {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(-3px, 2px);
+            }
+
+            50% {
+                transform: translate(3px, -2px);
+            }
+
+            75% {
+                transform: translate(-2px, -3px);
+            }
+
+            100% {
+                transform: translate(2px, 3px);
+            }
+        }
+
+        .heart-line {
+            opacity: 0;
+            animation: lineIn 0.2s ease forwards;
+            color: #ff4d6d;
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.4);
+        }
+
+        @keyframes lineIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1em;
+            background: #ff4d6d;
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .ascii-container {
+                font-size: 0.75em;
+            }
+
+            .message p {
+                font-size: 1.1em;
+            }
+
+                .message p:nth-of-type(1) {
+                    font-size: 1.2em;
+                }
+
+            .gif-wrap img {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="screen1">
+        <div class="gif-wrap">
+            <img src="heart.png" alt="heart">
+        </div>
+        <div class="message">
+            <p>Помнишь, программисты делали своим сайты романтичные?</p>
+            <p>Чем я хуже их?))</p>
+        </div>
+
+        <div class="button-row" id="buttonRow">
+            <!-- НАЧАЛЬНАЯ ПОЗИЦИЯ КНОПОК -->
+            <button class="nah-btn" id="nahBtn" onclick="growNextBtn()">Иди нахуй</button>
+            <button class="next-btn" id="nextBtn" onclick="goToTerminal()" style="transform: translate(-50%, 0) scale(1); z-index: 2;">Дальше →</button>
+        </div>
+    </div>
+
+    <div id="screen2">
+        <div class="terminal">
+            <div class="terminal-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="term-title">love.exe</span>
+            </div>
+            <div class="terminal-body">
+                <div class="ascii-container" id="asciiContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+let currentScale = 1;
+const nextBtn = document.getElementById('nextBtn');
+const nahBtn = document.getElementById('nahBtn');
+
+// ЧТОБЫ КНОПКИ НЕ ПЕРЕКРЫВАЛИ ДРУГ ДРУГА В САМОМ НАЧАЛЕ, РАЗДВИНЕМ ИХ
+// (Мы используем translate для центрирования, поэтому добавим отступы через margin)
+nextBtn.style.marginLeft = "65px";
+nahBtn.style.marginLeft = "-65px";
+
+function growNextBtn() {
+  currentScale += 0.4;
+
+  // Кнопка Дальше растет из центра
+  nextBtn.style.transform = `translate(-50%, 0) scale(${currentScale})`;
+  nextBtn.style.zIndex = 10 + currentScale;
+
+  // Кнопка Иди нахуй сжимается
+  const nahScale = Math.max(0.1, 1 - currentScale * 0.15);
+  nahBtn.style.transform = `translate(-50%, 0) scale(${nahScale})`;
+  nahBtn.style.opacity = Math.max(0.1, 1 - currentScale * 0.15);
+
+  // Когда Дальше становится гигантской, она перекрывает Иди нахуй
+  if (currentScale > 3) {
+    nahBtn.style.pointerEvents = 'none';
+    // Убираем отступы, чтобы Дальше встала ровно по центру
+    nextBtn.style.marginLeft = "0px";
+  }
+}
+
+function goToTerminal() {
+  document.getElementById('screen1').classList.add('hide');
+  setTimeout(() => {
+    document.getElementById('screen2').classList.add('show');
+    setTimeout(startTerminal, 600);
+  }, 800);
+}
+
+const asciiContainer = document.getElementById('asciiContainer');
+
+const heartAscii = [
+  '    $$$$$$$$        $$$$$$$$',
+  '  $$$$$$$$$$$$    $$$$$$$$$$$$',
+  ' $$$$$$$$$$$$$$  $$$$$$$$$$$$$$',
+  ' $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',
+  ' $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',
+  '  $$$$$$$$$$$$$$$$$$$$$$$$$$$$',
+  '   $$$$$$$$$$$$$$$$$$$$$$$$$$',
+  '    $$$$$$$$$$$$$$$$$$$$$$$$',
+  '     $$$$$$$$$$$$$$$$$$$$$$',
+  '      $$$$$$$$$$$$$$$$$$$$',
+  '       $$$$$$$$$$$$$$$$$$',
+  '        $$$$$$$$$$$$$$$$',
+  '         $$$$$$$$$$$$$$',
+  '          $$$$$$$$$$$$',
+  '           $$$$$$$$$$',
+  '            $$$$$$$$',
+  '             $$$$$$',
+  '              $$$$',
+  '               $$'
+];
+
+let lineIndex = 0;
+
+function startTerminal() {
+  nextLine();
+}
+
+function nextLine() {
+  if (lineIndex >= heartAscii.length) {
+    triggerGlitch();
+    return;
+  }
+  const text = heartAscii[lineIndex];
+  addLine(text, () => {
+    lineIndex++;
+    setTimeout(nextLine, 30);
+  });
+}
+
+function addLine(text, callback) {
+  const line = document.createElement('div');
+  line.className = 'heart-line';
+  const content = document.createElement('span');
+  content.dataset.original = text;
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+
+  line.appendChild(content);
+  line.appendChild(cursor);
+  asciiContainer.appendChild(line);
+
+  let i = 0;
+  function typeChar() {
+    if (i < text.length) {
+      content.textContent += text[i];
+      i++;
+      setTimeout(typeChar, 8);
+    } else {
+      cursor.remove();
+      if (callback) callback();
+    }
+  }
+  typeChar();
+}
+
+function triggerGlitch() {
+  const container = document.getElementById('asciiContainer');
+  const lines = container.querySelectorAll('.heart-line span');
+
+  setTimeout(() => {
+    let glitchCount = 0;
+    const maxGlitches = 10;
+
+    const glitchInterval = setInterval(() => {
+      container.classList.add('glitch-active');
+
+      lines.forEach(span => {
+        const original = span.dataset.original;
+        let glitched = '';
+
+        for (let i = 0; i < original.length; i++) {
+          if (original[i] === '$' && Math.random() > 0.4) {
+            glitched += Math.random() > 0.5 ? '█' : '0';
+          } else {
+            glitched += original[i];
+          }
+        }
+        span.textContent = glitched;
+      });
+
+      glitchCount++;
+
+      setTimeout(() => {
+        container.classList.remove('glitch-active');
+        lines.forEach(span => {
+          span.textContent = span.dataset.original;
+        });
+      }, 60);
+
+      if (glitchCount >= maxGlitches) {
+        clearInterval(glitchInterval);
+        container.style.color = '#ff4d6d';
+        container.style.textShadow = '0 0 30px rgba(255, 77, 109, 1), 0 0 60px rgba(255, 77, 109, 0.8)';
+        container.style.transform = 'scale(1.05)';
+      }
+
+    }, 150);
+  }, 500);
+}
+    </script>
+</body>
+</html>
