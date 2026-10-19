@@ -33,7 +33,7 @@
     pointer-events: none;
   }
 
-  .gif-wrap {
+  .img-wrap {
     opacity: 0;
     transform: scale(0.9);
     animation: fadeIn 1s ease forwards;
@@ -41,7 +41,7 @@
     margin-bottom: 30px;
     text-align: center;
   }
-  .gif-wrap img {
+  .img-wrap img {
     width: 100%;
     max-width: 200px;
     border-radius: 12px;
@@ -137,7 +137,7 @@
 
   .terminal {
     width: 100%;
-    max-width: 750px; /* Немного расширил, чтобы текст влезал ровнее */
+    max-width: 750px;
     background: #0d0d0f;
     border: 1px solid #222;
     border-radius: 10px;
@@ -181,7 +181,6 @@
     position: relative;
   }
 
-  /* Слой с падающими символами (Матрица) */
   #matrixBg {
     position: absolute;
     top: 0;
@@ -258,7 +257,6 @@
   }
   @keyframes blink { 50% { opacity: 0; } }
 
-  /* Стили для текста "жду обнимашек" */
   .love-message {
     position: relative;
     z-index: 1;
@@ -271,7 +269,7 @@
     opacity: 0;
     transition: opacity 0.5s ease;
     text-shadow: 0 0 15px rgba(255, 77, 109, 0.6);
-    min-height: 50px; /* Чтобы верстка не прыгала, пока текст печатается */
+    min-height: 50px;
   }
   .love-message.show { opacity: 1; }
   
@@ -279,7 +277,6 @@
     color: #888;
   }
 
-  /* Конфетти */
   .confetti-heart {
     position: fixed;
     pointer-events: none;
@@ -292,19 +289,15 @@
     .ascii-container { font-size: 0.7em; }
     .message p { font-size: 1.1em; }
     .message p:nth-of-type(1) { font-size: 1.2em; }
-    .gif-wrap img { max-width: 150px; }
+    .img-wrap img { max-width: 150px; }
     .love-message { font-size: 0.95em; }
   }
 </style>
 </head>
 <body>
 
-<audio id="bgMusic" loop>
-  <source src="song.mp3" type="audio/mpeg">
-</audio>
-
 <div id="screen1">
-  <div class="gif-wrap">
+  <div class="img-wrap">
     <img src="heart.png" alt="heart">
   </div>
   <div class="message">
@@ -332,7 +325,6 @@
 
       <div class="ascii-container" id="asciiContainer" onclick="spawnConfetti()" title="Нажми на меня"></div>
       
-      <!-- НОВЫЙ БЛОК ДЛЯ ТЕКСТА -->
       <div class="love-message" id="loveMessage">
         <span class="prompt-prefix">> incoming_message:</span> <br>
         <span id="typedText"></span><span class="cursor" id="msgCursor" style="display:none;"></span>
@@ -343,7 +335,6 @@
 </div>
 
 <script>
-// 1. ГЕНЕРАТОР МАТРИЦЫ
 function initMatrix() {
   const matrixBg = document.getElementById('matrixBg');
   const symbols = ['$', '1', '0', '♥', '█', 'F', 'A', 'K', 'E'];
@@ -365,7 +356,6 @@ function initMatrix() {
 }
 initMatrix();
 
-// 2. ЛОГИКА КНОПОК
 let currentScale = 1;
 const nextBtn = document.getElementById('nextBtn');
 const nahBtn = document.getElementById('nahBtn');
@@ -389,12 +379,6 @@ function growNextBtn() {
 }
 
 function goToTerminal() {
-  const music = document.getElementById('bgMusic');
-  if (music) {
-    music.volume = 0.4;
-    music.play().catch(e => console.log("Музыка не найдена"));
-  }
-
   document.getElementById('screen1').classList.add('hide');
   setTimeout(() => {
     document.getElementById('screen2').classList.add('show');
@@ -402,7 +386,6 @@ function goToTerminal() {
   }, 800);
 }
 
-// 3. ТЕРМИНАЛ И СЕРДЕЧКО
 const asciiContainer = document.getElementById('asciiContainer');
 const heartAscii = [
   '    $$$$$$$$        $$$$$$$$',
@@ -508,14 +491,12 @@ function triggerGlitch() {
         container.style.textShadow = '0 0 30px rgba(255, 77, 109, 1), 0 0 60px rgba(255, 77, 109, 0.8)';
         container.style.transform = 'scale(1.05)';
         
-        // ЗАПУСКАЕМ ПЕЧАТЬ СООБЩЕНИЯ
         setTimeout(startMessageTyping, 800);
       }
     }, 150);
   }, 500);
 }
 
-// 4. ПЕЧАТЬ СООБЩЕНИЯ "ЖДУ ОБНИМАШЕК"
 function startMessageTyping() {
   const msgContainer = document.getElementById('loveMessage');
   const typedText = document.getElementById('typedText');
@@ -531,16 +512,13 @@ function startMessageTyping() {
     if (i < finalMessage.length) {
       typedText.textContent += finalMessage[i];
       i++;
-      setTimeout(typeNextChar, 40); // Скорость печати сообщения
-    } else {
-      // Когда сообщение напечаталось, оставляем курсор мигать
+      setTimeout(typeNextChar, 40);
     }
   }
   
   setTimeout(typeNextChar, 500);
 }
 
-// 5. КОНФЕТТИ
 function spawnConfetti() {
   const cx = window.innerWidth / 2;
   const cy = window.innerHeight / 2;
