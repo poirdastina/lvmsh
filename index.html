@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta charset="UTF-8">
-<title>яжирни</title>
+<title>gandons.exe</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -176,7 +176,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 350px;
+    min-height: 380px;
     overflow: hidden;
     position: relative;
   }
@@ -209,7 +209,6 @@
     100% { transform: translateY(100%); }
   }
 
-  /* Добавили анимацию легкой пульсации для сердечка */
   .ascii-container {
     position: relative;
     z-index: 1;
@@ -264,7 +263,6 @@
   }
   @keyframes blink { 50% { opacity: 0; } }
 
-  
   .tap-hint {
     position: relative;
     z-index: 1;
@@ -305,6 +303,23 @@
     color: #888;
   }
 
+  /* сюда пихаем кота */
+  .cat-box {
+    position: relative;
+    z-index: 1;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1em;
+    line-height: 1.1;
+    color: #ff8fa3;
+    text-shadow: 0 0 15px rgba(255, 77, 109, 0.7);
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    margin-top: 15px;
+    white-space: pre;
+    text-align: center;
+  }
+  .cat-box.show { opacity: 1; }
+
   .confetti-heart {
     position: fixed;
     pointer-events: none;
@@ -320,6 +335,7 @@
     .img-wrap img { max-width: 150px; }
     .love-message { font-size: 0.95em; }
     .tap-hint { font-size: 0.85em; }
+    .cat-box { font-size: 0.85em; }
   }
 </style>
 </head>
@@ -354,13 +370,14 @@
 
       <div class="ascii-container" id="asciiContainer" onclick="spawnConfetti()" title="Нажми на меня"></div>
       
-      
       <div class="tap-hint" id="tapHint">[ нажми на сердечко ]</div>
 
       <div class="love-message" id="loveMessage">
         <span class="prompt-prefix">> incoming_message:</span> <br>
         <span id="typedText"></span><span class="cursor" id="msgCursor" style="display:none;"></span>
       </div>
+
+      <div class="cat-box" id="catBox"></div>
 
     </div>
   </div>
@@ -525,7 +542,6 @@ function triggerGlitch() {
         container.style.animation = 'subtlePulse 1.5s infinite alternate ease-in-out';
         container.style.transform = 'scale(1.05)';
         
-        
         document.getElementById('tapHint').classList.add('show');
         setTimeout(startMessageTyping, 800);
       }
@@ -549,10 +565,34 @@ function startMessageTyping() {
       typedText.textContent += finalMessage[i];
       i++;
       setTimeout(typeNextChar, 40);
+    } else {
+      // когда допечаталось - выпускаем кота
+      setTimeout(showCat, 600);
     }
   }
   
   setTimeout(typeNextChar, 500);
+}
+
+// --- кот ---
+// кадры для моргания. меняются каждые ~700мс
+const catFrames = [
+  "   /\\_/\\  \n  ( o.o ) \n   > ^ <  ",
+  "   /\\_/\\  \n  ( -.- ) \n   > ^ <  ",
+  "   /\\_/\\  \n  ( ^.^ ) \n   > ^ <  ",
+  "   /\\_/\\  \n  ( o.o ) \n   > ^ <~ "
+];
+let catIdx = 0;
+let catTimer = null;
+
+function showCat() {
+  const catBox = document.getElementById('catBox');
+  catBox.classList.add('show');
+
+  catTimer = setInterval(() => {
+    catBox.textContent = catFrames[catIdx];
+    catIdx = (catIdx + 1) % catFrames.length;
+  }, 700);
 }
 
 function spawnConfetti() {
